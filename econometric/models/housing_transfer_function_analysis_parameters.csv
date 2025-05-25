@@ -1,0 +1,23 @@
+Parameter,Value,Description
+tf_weight_lag_0,-0.0009897118878253492,Transfer function weight for lag 0
+tf_weight_lag_1,0.0013042805548131413,Transfer function weight for lag 1
+tf_weight_lag_2,0.0010162449336820788,Transfer function weight for lag 2
+tf_weight_lag_3,0.0003626114186611911,Transfer function weight for lag 3
+tf_weight_lag_4,-0.0018233322371717549,Transfer function weight for lag 4
+tf_weight_lag_5,0.0013956537845209811,Transfer function weight for lag 5
+tf_weight_lag_6,-0.001996342179926133,Transfer function weight for lag 6
+tf_weight_lag_7,0.0024113226598689837,Transfer function weight for lag 7
+tf_weight_lag_8,0.00011962932934301228,Transfer function weight for lag 8
+tf_weight_lag_9,0.002274362074143319,Transfer function weight for lag 9
+tf_weight_lag_10,0.0006935439155220722,Transfer function weight for lag 10
+tf_weight_lag_11,-0.0017544778053144887,Transfer function weight for lag 11
+tf_weight_lag_12,-0.0023155031992745053,Transfer function weight for lag 12
+ar_coeff_1,1.4761560923663959,Autoregressive coefficient for lag 1
+ar_coeff_2,-0.634359277846587,Autoregressive coefficient for lag 2
+r_squared,0.8979852256452815,R-squared
+adjusted_r_squared,0.8918149771964073,Adjusted R-squared
+aic,-2340.2551606150364,Akaike Information Criterion
+bic,-2283.0399749646954,Bayesian Information Criterion
+log_likelihood,1186.1275803075182,Log-likelihood
+f_statistic,145.53469492936517,F-statistic
+f_pvalue,1.555812595355392e-113,F-test p-value
