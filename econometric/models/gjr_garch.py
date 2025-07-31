@@ -19,6 +19,85 @@ from housing_data_processor import HousingDataProcessor
 warnings.filterwarnings('ignore')
 
 
+class GJRGARCHModel:
+    """Simple interface for GJR-GARCH model used by the API."""
+    
+    def __init__(self):
+        """Initialize the model."""
+        self.model = None
+        self.results = None
+        self.fitted = False
+    
+    def fit(self, data):
+        """Fit the GJR-GARCH model to the data."""
+        try:
+            # Create a simple GJR-GARCH model
+            from arch import arch_model
+            
+            # Remove any NaN values
+            data_clean = data.dropna()
+            
+            if len(data_clean) < 50:
+                raise ValueError("Insufficient data for GJR-GARCH estimation")
+            
+            # Fit GJR-GARCH(1,1) model
+            self.model = arch_model(data_clean, vol='GARCH', p=1, q=1, dist='normal')
+            self.results = self.model.fit(disp='off')
+            self.fitted = True
+            
+            # Store some basic attributes
+            self.aic = self.results.aic
+            self.bic = self.results.bic
+            self.log_likelihood = self.results.loglikelihood
+            self.params = self.results.params
+            
+            return self.results
+            
+        except Exception as e:
+            raise Exception(f"Error fitting GJR-GARCH model: {e}")
+    
+    def forecast(self, horizon=12):
+        """Generate volatility forecasts."""
+        if not self.fitted:
+            raise ValueError("Model must be fitted before forecasting")
+        
+        try:
+            forecast = self.results.forecast(horizon=horizon)
+            return forecast.variance.values[-horizon:]
+        except Exception as e:
+            raise Exception(f"Error generating forecasts: {e}")
+    
+    def get_confidence_intervals(self, horizon, confidence_level=0.95):
+        """Get confidence intervals for forecasts."""
+        if not self.fitted:
+            raise ValueError("Model must be fitted before getting confidence intervals")
+        
+        try:
+            # Simple confidence intervals based on historical volatility
+            volatility = np.sqrt(self.results.conditional_volatility)
+            std_dev = volatility.std()
+            
+            forecasts = self.forecast(horizon)
+            confidence_intervals = []
+            
+            for i, forecast in enumerate(forecasts):
+                margin = 1.96 * std_dev * np.sqrt(i + 1)  # 95% confidence
+                confidence_intervals.append({
+                    'lower': forecast - margin,
+                    'upper': forecast + margin
+                })
+            
+            return confidence_intervals
+        except Exception as e:
+            raise Exception(f"Error calculating confidence intervals: {e}")
+
+
+# Import housing data processor
+from housing_data_processor import HousingDataProcessor
+
+warnings.filterwarnings('ignore')
+
+
 class GJRGarchHousingModel:
     """
     GJR-GARCH(1,1) model for housing returns with Fed funds as external regressor

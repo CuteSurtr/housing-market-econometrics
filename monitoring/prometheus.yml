@@ -1,0 +1,69 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Housing Market Econometrics API
+  - job_name: 'housing-econometrics-api'
+    static_configs:
+      - targets: ['localhost:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # Database monitoring
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['localhost:9187']
+    scrape_interval: 30s
+
+  # Redis monitoring
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['localhost:9121']
+    scrape_interval: 30s
+
+  # Node exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['localhost:9100']
+    scrape_interval: 30s
+
+  # Docker containers
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['localhost:9323']
+    scrape_interval: 30s
+
+  # Custom metrics for econometric models
+  - job_name: 'econometric-models'
+    static_configs:
+      - targets: ['localhost:8000']
+    metrics_path: '/api/v1/metrics/models'
+    scrape_interval: 60s
+    scrape_timeout: 15s
+
+  # Model performance metrics
+  - job_name: 'model-performance'
+    static_configs:
+      - targets: ['localhost:8000']
+    metrics_path: '/api/v1/metrics/performance'
+    scrape_interval: 120s
+    scrape_timeout: 20s
+
+  # Data processing metrics
+  - job_name: 'data-processing'
+    static_configs:
+      - targets: ['localhost:8000']
+    metrics_path: '/api/v1/metrics/data'
+    scrape_interval: 60s
+    scrape_timeout: 15s 
