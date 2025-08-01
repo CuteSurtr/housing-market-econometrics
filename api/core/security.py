@@ -62,6 +62,7 @@ class SecurityManager:
             if username is None:
                 return None
             return payload
+        
         except JWTError:
             return None
     
